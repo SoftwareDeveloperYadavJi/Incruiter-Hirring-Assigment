@@ -44,6 +44,9 @@ Incruiter is a Node.js application designed to manage user authentication, autho
 To start the development server, run:
 ```sh
 npm run dev
+```
+
+
 
 
 

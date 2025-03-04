@@ -6,6 +6,7 @@ import { EmailSender } from '../utils/sendEmail';
 import { userInput } from '../types/userInput';
 import { generateRandomToken } from '../utils/generateToken';
 import { generateRandomNumber } from '../utils/gererateOTP';
+import { PostModel } from '../models/post.models';
 
 
 export const login = async (req: Request, res: Response) => {
@@ -141,3 +142,29 @@ export const resetPassword = async (req: Request, res: Response) => {
     }
 };
 
+export const getAllUsers = async (req: Request, res: Response) => {
+    try {
+        const users = await UserModel.find();
+        res.status(200).json({ message: 'Users retrieved successfully', users });
+    } catch (error) {
+        console.error('Error retrieving users:', error);
+        res.status(500).json({ message: 'Error retrieving users' });
+    }
+};
+
+
+export const deletePost = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const post = await PostModel.findById(id);
+        if (!post) {
+            res.status(404).json({ message: 'Post not found' });
+            return;
+        }
+        await PostModel.deleteOne({ _id: id });
+        res.status(200).json({ message: 'Post deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting post:', error);
+        res.status(500).json({ message: 'Error deleting post' });
+    }
+};
